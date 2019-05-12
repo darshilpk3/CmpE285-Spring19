@@ -27,8 +27,8 @@ def suggest_stocks():
     req_data = request.get_json()
     strategy_1 = req_data['strategy_1']
     amount = req_data['amount']
-    resp_obj = {}
-    stock_info = []
+    resp_obj = {} 
+    stock_info = [] 
 
     options = []
     while len(options) < 3:
