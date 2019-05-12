@@ -2,13 +2,14 @@ from flask import Flask, request, redirect, url_for, jsonify, send_file
 import requests
 import json
 import random
+from flask_cors import CORS
 
-import sys
-reload(sys)
-sys.setdefaultencoding('utf8')
+# import sys
+# reload(sys)
+# sys.setdefaultencoding('utf8')
 
 app = Flask(__name__, static_url_path='/static')
-
+CORS(app)
 
 @app.route('/')
 def hello():
@@ -24,6 +25,7 @@ stock_options = {
 
 @app.route('/suggest',methods=['POST'])
 def suggest_stocks():
+    print ("suggest")
     req_data = request.get_json()
     strategy_1 = req_data['strategy_1']
     amount = req_data['amount']
@@ -32,11 +34,11 @@ def suggest_stocks():
 
     options = []
     while len(options) < 3:
-        temp = random.randint(0,5)
+        temp = random.randint(0,4)
         if temp not in options:
             options.append(temp)
 
-    print options
+    #print options
     i = 0
     for option in options:
         stock_list1 = stock_options[strategy_1]
@@ -56,18 +58,18 @@ def suggest_stocks():
             if resp_iex.status_code == 200:
                 r = resp_iex.json()
                 r2 = resp_aplha.json()
-                print r['companyName']
+                #print r['companyName']
                 temp["symbolName"] = r['symbol']
                 temp['companyName'] = r['companyName']
                 temp['latestPrice'] = r['latestPrice']
                 temp['changePercentage'] = float(r['changePercent'])*100
-                print perc
+                #print perc
                 temp['investAmount'] = amount*(perc)
                 temp['weeklyData'] = r2['Time Series (Daily)']
-                print "**************END****************"
+                #print "**************END****************"
                 stock_info.append(temp)
         except requests.ConnectionError:
-            print("failed to connect")
+            print ("failed to connect")
 
     resp_obj['stock_info'] = stock_info
     return jsonify(resp_obj)
@@ -75,7 +77,9 @@ def suggest_stocks():
 
 
 @app.route('/suggest2',methods=['POST'])
+
 def suggest_stocks2():
+    print ("suggest2")
     req_data = request.get_json()
     strategy_1 = req_data['strategy_1']
     strategy_2 = req_data['strategy_2']
@@ -89,7 +93,7 @@ def suggest_stocks2():
         if temp not in options:
             options.append(temp)
 
-    print options
+    #print options
     i = 0
     for option in options:
         stock_list1 = stock_options[strategy_1]
@@ -113,15 +117,15 @@ def suggest_stocks2():
             if resp_iex.status_code == 200:
                 r = resp_iex.json()
                 r2 = resp_aplha.json()
-                print r['companyName']
+                #print r['companyName']
                 temp["symbolName"] = r['symbol']
                 temp['companyName'] = r['companyName']
                 temp['latestPrice'] = r['latestPrice']
                 temp['changePercentage'] = float(r['changePercent'])*100
-                print perc
+                #print perc
                 temp['investAmount'] = amount*(perc)
                 temp['weeklyData'] = r2['Time Series (Daily)']
-                print "**************END****************"
+                #print "**************END****************"
                 stock_info.append(temp)
             if i<3:
                 temp = {}
@@ -130,19 +134,19 @@ def suggest_stocks2():
                 if resp_iex.status_code == 200:
                     r = resp_iex.json()
                     r2 = resp_aplha.json()
-                    print r['companyName']
+                    #print r['companyName']
                     temp["symbolName"] = r['symbol']
                     temp['companyName'] = r['companyName']
                     temp['latestPrice'] = r['latestPrice']
                     temp['changePercentage'] = float(r['changePercent'])*100
-                    print perc
+                    #print perc
                     temp['investAmount'] = amount*(perc)
                     temp['weeklyData'] = r2['Time Series (Daily)']
-                    print "**************END****************"
+                    #print "**************END****************"
                     stock_info.append(temp)
-                    print len(stock_info)
+                    #print len(stock_info)
         except requests.ConnectionError:
-            print("failed to connect")
+            print ("failed to connect")
 
     resp_obj['stock_info'] = stock_info
     return jsonify(resp_obj)

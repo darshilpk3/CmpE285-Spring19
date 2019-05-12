@@ -91,7 +91,7 @@ class Home extends Component {
 
     invest = (e) => {
         this.props.history.push({
-            pathname: '/stats',
+            pathname: '/suggest',
             state: {
                 strategies: this.state.strategies,
                 amount: parseFloat(this.state.amount)
