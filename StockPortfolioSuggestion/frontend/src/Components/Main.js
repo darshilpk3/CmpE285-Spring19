@@ -1,7 +1,8 @@
 import React,{Component} from 'react';
 import {Route} from 'react-router-dom'; 
 import Home from './Home/Home'
-import Invest from './Invest/Invest'
+import Graph from './Graph/Graph'
+import Stats from './Graph/Stats'
 import '../App.css'
 
 class Main extends Component{
@@ -10,7 +11,8 @@ class Main extends Component{
         return(
             <div>
                 <Route exact path="/" component={Home}></Route>
-                <Route exact path="/invest" component={Invest}></Route>
+                <Route exact path="/graph" component={Graph}></Route>
+                <Route exact path="/stats" component={Stats}></Route>
             </div>
         )
     }
