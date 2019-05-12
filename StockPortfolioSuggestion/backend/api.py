@@ -16,7 +16,7 @@ def hello():
 
 stock_options = {
         'ethical': ['AAPL', 'ADBE', 'SBUX', 'GILD', 'GOOGL'],
-        'growth': ['BIIB', 'AKRX', 'IPGP', 'PSXP', 'NFLX'],
+        'growth': ['BIIB', 'AKRX', 'IPGP', 'SFIX', 'NFLX'],
         'index': ['VTI', 'IXUS', 'ILTB', 'VIS', 'KRE', 'VEU'],
         'quality': ['QUAL', 'SPHQ', 'DGRW', 'QDF'],
         'value': ['AAON', 'CTB', 'JNJ', 'GRUB', 'TTGT']
@@ -41,10 +41,10 @@ def suggest_stocks():
     for option in options:
         stock_list1 = stock_options[strategy_1]
         if i == 0:
-            perc = 0.23
+            perc = 0.12
             i=i+1
         elif i == 1:
-            perc = 0.37
+            perc = 0.18
             i=i+1
         elif i == 2:
             perc = 0.4

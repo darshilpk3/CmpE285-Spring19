@@ -19,15 +19,24 @@ class Home extends Component {
             quality: false,
             value: false,
             strategies: [],
-            amount: null
+            amount: null,
+            msg:null
 
         }
     }
 
     changeAmount = (e) => {
-        this.setState({
-            amount: e
-        })
+        if(e<1000){
+            this.setState({
+                amount:e,
+                msg:"Below 1000"
+            })
+        }else{
+            this.setState({
+                amount: e,
+                msg:null
+            })
+        }
     }
 
     toggleStrategy = (e) => {
@@ -66,7 +75,7 @@ class Home extends Component {
                 console.log(this.state.strategies)
                 if (this.state.ethical + this.state.growth + this.state.index + this.state.quality + this.state.value > 2) {
                     strategies.pop(id.toString())
-                    swal("Only 2 strategies can be selected")
+                    swal("","Only 2 strategies can be selected","error")
                     this.setState({
                         [id]: !this.state[id],
                         strategies: strategies
@@ -96,6 +105,11 @@ class Home extends Component {
         var indexButton = null
         var qualityButton = null
         var valueButton = null
+        var msg = null
+
+        if(this.state.msg){
+            msg = "Investment amount should be greater than $1000"
+        }
 
         if (this.state.ethical)
             ethicalButton = <center><Button id="ethical" onClick={this.toggleStrategy} type="primary" block>Selected</Button></center>
@@ -119,28 +133,28 @@ class Home extends Component {
             qualityButton = <center><Button id="quality" onClick={this.toggleStrategy} block>Select</Button></center>
         return (
             <div class="bg-light">
-                <div class="px-5 pt-5">
+                <div class="px-3 pt-3">
                     <center>
                         <Link to="/"><h1 class="text-info">Stock Portfolio Suggestion Engine</h1></Link>
                     </center>
                     <Divider></Divider>
                 </div>
-                <div class="px-3 py-5">
-                    <h3 class="px-3">Step 1</h3>
-                    <h4 class="text-secondary px-3">Enter the Amount(in dollars) you want to Invest:</h4>
+                <div class="px-2 py-2">
+                    <h3 class="px-2">Step 1</h3>
+                    <h4 class="text-secondary px-2">Enter the Amount(in dollars) you want to Invest:</h4>
                     <InputNumber
-                        min={1000}
                         step={100}
                         style={{ width: '100%', height: 45 }}
                         onChange={this.changeAmount}
                     ></InputNumber>
+                    <p class="text-danger">{msg}</p>
                 </div>
-                <div class="px-3 py-3">
-                    <h3 class="px-3">Step 2</h3>
-                    <h4 class="px-3 text-secondary">Select upto two Investment Strategies</h4>
+                <div class="px-2 py-2">
+                    <h3 class="px-2">Step 2</h3>
+                    <h4 class="px-2 text-secondary">Select upto two Investment Strategies</h4>
                     <Row type="flex">
                         <Col span={6}>
-                            <div class="px-3 py-3">
+                            <div class="px-2 py-2">
                                 <Card
                                     bordered={true}
                                     title="Ethical Investing"
@@ -155,7 +169,7 @@ class Home extends Component {
                             </div>
                         </Col>
                         <Col span={6}>
-                            <div class="px-3 py-3">
+                            <div class="px-2 py-2">
                                 <Card
                                     bordered={true}
                                     title="Growth Investing"
@@ -170,7 +184,7 @@ class Home extends Component {
                             </div>
                         </Col>
                         <Col span={6}>
-                            <div class="px-3 py-3">
+                            <div class="px-2 py-2">
                                 <Card
                                     bordered={true}
                                     title="Index Investing"
@@ -184,7 +198,7 @@ class Home extends Component {
                             </div>
                         </Col>
                         <Col span={6}>
-                            <div class="px-3 py-3">
+                            <div class="px-2 py-2">
                                 <Card
                                     bordered={true}
                                     title="Quality Investing"
@@ -199,7 +213,7 @@ class Home extends Component {
                             </div>
                         </Col>
                         <Col span={6}>
-                            <div class="px-3 py-3">
+                            <div class="px-2 py-2">
                                 <Card
                                     bordered={true}
                                     title="Value Investing"
@@ -214,7 +228,7 @@ class Home extends Component {
                         </Col>
                     </Row>
                 </div>
-                <div class="px-3 py-3">
+                <div class="px-2 py-2">
                     <center>
                         <Button
                             type="primary"
