@@ -4,7 +4,7 @@ import Tab from 'react-bootstrap/Tab';
 import Graph from './Graph';
 import axios from 'axios';
 import Table from 'react-bootstrap/Table'
-import { Skeleton } from 'antd';
+import { Skeleton, Empty } from 'antd';
 
 export class Stats extends Component {
 
@@ -13,7 +13,8 @@ export class Stats extends Component {
         this.state = {
             key: "profileview",
             stockdata: null,
-            companies: []
+            companies: [],
+            "error": null
         }
     }
 
@@ -23,41 +24,49 @@ export class Stats extends Component {
         // const prop = ["ethical"]
         const strategies = this.props.location.state.strategies
         const amount = this.props.location.state.amount
-        
-        
-        if (strategies.length == 1) {
+
+
+        if (strategies.length === 1) {
             const data = {
                 "amount": amount,
                 "strategy_1": strategies[0]
             }
-            
+
             axios.post('http://localhost:5000/suggest', data)
                 .then(response => {
-                    
                     if (response.status === 200) {
                         this.setState({
                             companies: response.data.stock_info
                         })
                     }
                 })
-        } else if (strategies.length == 2) {
+                .catch(err => {
+                    console.log("error")
+                    this.setState({
+                        error: "couldn't fetch data"
+                    })
+                })
+        } else if (strategies.length === 2) {
             const data = {
                 "amount": amount,
                 "strategy_1": strategies[0],
                 "strategy_2": strategies[1]
             }
-            
+
 
             axios.post('http://localhost:5000/suggest2', data)
                 .then(response => {
-                    
-
                     if (response.status === 200) {
-                        
                         this.setState({
                             companies: response.data.stock_info
                         })
                     }
+                })
+                .catch(err => {
+                    console.log("error")
+                    this.setState({
+                        error: "couldn't fetch data"
+                    })
                 })
         }
     }
@@ -66,37 +75,44 @@ export class Stats extends Component {
         let companies = this.state.companies
         let tabs = null
         let skeleton = null
-        if(companies.length===0 || !companies){
-            skeleton = <Skeleton active/>
-        }else{
+        let error = null
+        if (companies.length === 0 || !companies) {
+            skeleton = <Skeleton active />
+        } else {
             skeleton = null
         }
-        if(companies.length>0){
+
+        if (this.state.error) {
+            error = <Empty description="Couldn't fetch data, try again by refreshing!" />
+            skeleton=null
+        }
+        if (companies.length > 0) {
             tabs = <Tabs
-                    id="controlled-tab-example"
-                    activeKey={this.state.key}
-                    onSelect={key => this.setState({ key })}
-                >
-                    {companies.map((company, index) => {
-                        // let weeklyData = Object.keys(company.weeklyData)
-                        let weeklyData = company.weeklyData
-                        let data = []
-                        Object.keys(weeklyData).map((key) => {
-                            data.push({
-                                "day":key,
-                                "high":weeklyData[key]["2. high"],
-                                "low":weeklyData[key]["3. low"]
-                            })
-                        });
-                        return <Tab key={index} eventKey={company.symbolName} title={company.companyName}>
-                            <Graph data={data}/>
-                        </Tab>
-                    })
-                    }
-                </Tabs>
+                id="controlled-tab-example"
+                activeKey={this.state.key}
+                onSelect={key => this.setState({ key })}
+            >
+                {companies.map((company, index) => {
+                    // let weeklyData = Object.keys(company.weeklyData)
+                    let weeklyData = company.weeklyData
+                    let data = []
+                    Object.keys(weeklyData).map((key) => {
+                        data.push({
+                            "day": key,
+                            "high": weeklyData[key]["2. high"],
+                            "low": weeklyData[key]["3. low"]
+                        })
+                    });
+                    return <Tab key={index} eventKey={company.symbolName} title={company.companyName}>
+                        <Graph data={data} />
+                    </Tab>
+                })
+                }
+            </Tabs>
         }
         return (
             <div className="stats">
+                <h4>Stocks Suggestion</h4><br />
                 
                 <Table striped bordered hover>
                     <thead>
@@ -109,11 +125,11 @@ export class Stats extends Component {
                             <th>Invested Amount</th>
                         </tr>
                     </thead>
-                    {skeleton}
+                    
                     <tbody>
-                        
+
                         {companies.map((company, index) => {
-                            
+
                             return <tr key={index}>
                                 <td>{index + 1}</td>
                                 <td><b>{company.symbolName}</b></td>
@@ -126,10 +142,13 @@ export class Stats extends Component {
                         }
                     </tbody>
                 </Table>
-
+                {error}
+                {skeleton}
+                <br></br>
                 <h4>Stock Report</h4><br />
                 {tabs}
                 {skeleton}
+                {error}
             </div>
         )
     }

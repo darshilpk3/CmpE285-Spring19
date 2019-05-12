@@ -43,10 +43,10 @@ def suggest_stocks():
     for option in options:
         stock_list1 = stock_options[strategy_1]
         if i == 0:
-            perc = 0.12
+            perc = 0.36
             i=i+1
         elif i == 1:
-            perc = 0.18
+            perc = 0.24
             i=i+1
         elif i == 2:
             perc = 0.4
@@ -68,8 +68,9 @@ def suggest_stocks():
                 temp['weeklyData'] = r2['Time Series (Daily)']
                 #print "**************END****************"
                 stock_info.append(temp)
-        except requests.ConnectionError:
-            print ("failed to connect")
+        except:
+            print "some error"
+            return "failed",500
 
     resp_obj['stock_info'] = stock_info
     return jsonify(resp_obj)
@@ -99,13 +100,13 @@ def suggest_stocks2():
         stock_list1 = stock_options[strategy_1]
         stock_list2 = stock_options[strategy_2]
         if i == 0:
-            perc = 0.14
+            perc = 0.12
             i=i+1
         elif i == 1:
-            perc = 0.16
+            perc = 0.18
             i = i+1
         elif i==2:
-            perc = 0.2
+            perc = 0.4
             i = i+1
 
         
@@ -145,8 +146,9 @@ def suggest_stocks2():
                     #print "**************END****************"
                     stock_info.append(temp)
                     #print len(stock_info)
-        except requests.ConnectionError:
-            print ("failed to connect")
+        except:
+            print "some error"
+            return "failed",500
 
     resp_obj['stock_info'] = stock_info
     return jsonify(resp_obj)
