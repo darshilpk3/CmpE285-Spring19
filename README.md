@@ -1,6 +1,7 @@
 # CmpE285-Spring19
-Work done at SJSU for course CmpE285: Software Engineering Processes
-Video Link: Coming up
+- Work done at SJSU for course CmpE285: Software Engineering Processes
+
+- Video Link: Coming up
 
 ### Steps and Requirements to run this project:
 1. Download Python 2.7(Link: https://www.python.org/download/releases/2.7/)
