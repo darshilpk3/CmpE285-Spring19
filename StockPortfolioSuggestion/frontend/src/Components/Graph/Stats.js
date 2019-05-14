@@ -4,7 +4,7 @@ import Tab from 'react-bootstrap/Tab';
 import Graph from './Graph';
 import axios from 'axios';
 import Table from 'react-bootstrap/Table'
-import { Skeleton, Empty } from 'antd';
+import { Skeleton, Empty, Button } from 'antd';
 
 export class Stats extends Component {
 
@@ -83,7 +83,7 @@ export class Stats extends Component {
         }
 
         if (this.state.error) {
-            error = <Empty description="Couldn't fetch data, try again by refreshing!" />
+            error = <Empty description="Couldn't fetch data, try again by refreshing after a minute!" />
             skeleton=null
         }
         if (companies.length > 0) {
@@ -149,6 +149,7 @@ export class Stats extends Component {
                 {tabs}
                 {skeleton}
                 {error}
+                <Button size="large" onClick={() =>  window.print()} className="mx-3 my-3 px-3 center">Print Data</Button>
             </div>
         )
     }
